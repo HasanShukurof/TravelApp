@@ -1,16 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:san_travel/screens/payment_screen.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
-  const PaymentMethodScreen({super.key});
+  final String guestName;
+  final String guestCount;
+  final String carType;
+  final DateTime? startDate;
+  final DateTime? endDate;
+
+  const PaymentMethodScreen(
+      {required this.guestName,
+      required this.guestCount,
+      required this.carType,
+      this.startDate,
+      this.endDate});
 
   @override
   State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
 }
 
 class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+  Future<void> addDataToFirestore() async {
+    print("${widget.guestName}");
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    final Map<String, dynamic> data = {
+      'guestName': widget.guestName,
+      'guestCount': widget.guestCount,
+      'carType': widget.carType,
+      'startDate': widget.startDate?.toIso8601String(),
+      'endDate': widget.endDate?.toIso8601String(),
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    try {
+      await firestore.collection("Sifarish Detallari").add(data);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PaymentScreen(),
+        ),
+      );
+    } catch (e) {
+      print("Firestore'a veri eklenirken hata oluştu: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Bir hata oluştu: $e")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,13 +211,16 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
           Padding(
             padding: const EdgeInsets.all(28.0),
             child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PaymentScreen(),
-                  ),
-                );
+              onTap: () async {
+                await addDataToFirestore();
+
+                // firestore.collection("Sifarish Detallari").add(data);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const PaymentScreen(),
+                //   ),
+                // );
               },
               child: Container(
                 margin: const EdgeInsets.only(bottom: 10),
