@@ -8,15 +8,21 @@ class PaymentMethodScreen extends StatefulWidget {
   final String guestName;
   final String guestCount;
   final String carType;
+  final String phoneNumber;
+  final bool isCheckedAirportPickUp;
   final DateTime? startDate;
   final DateTime? endDate;
 
-  const PaymentMethodScreen(
-      {required this.guestName,
-      required this.guestCount,
-      required this.carType,
-      this.startDate,
-      this.endDate});
+  const PaymentMethodScreen({
+    super.key,
+    required this.guestName,
+    required this.guestCount,
+    required this.carType,
+    required this.phoneNumber,
+    required this.isCheckedAirportPickUp,
+    required this.startDate,
+    required this.endDate,
+  });
 
   @override
   State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
@@ -31,9 +37,11 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       'guestName': widget.guestName,
       'guestCount': widget.guestCount,
       'carType': widget.carType,
+      'phoneNumber': widget.phoneNumber,
+      'isCheckedAirportPickUp': widget.isCheckedAirportPickUp,
       'startDate': widget.startDate?.toIso8601String(),
       'endDate': widget.endDate?.toIso8601String(),
-      'timestamp': FieldValue.serverTimestamp(),
+      'orderDate': FieldValue.serverTimestamp(),
     };
 
     try {

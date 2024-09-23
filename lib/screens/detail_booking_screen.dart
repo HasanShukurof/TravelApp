@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:san_travel/screens/payment_method_screen.dart';
 
 class DetailBookingScreen extends StatefulWidget {
@@ -13,10 +14,13 @@ class DetailBookingScreen extends StatefulWidget {
 class _DetailBookingScreenState extends State<DetailBookingScreen> {
   final TextEditingController _guestNameController = TextEditingController();
   final TextEditingController _guestCountController = TextEditingController();
+  String? dropDownValue;
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _fromDateController = TextEditingController();
   final TextEditingController _toDateController = TextEditingController();
-  String? dropDownValue;
   List<String> listAutoType = ["Sedan", "Minivan"];
+  bool isCheckedAirportPickUp = false;
+  String? _completeNumber;
 
   DateTime? startDate;
   DateTime? endDate;
@@ -28,10 +32,11 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != startDate)
+    if (picked != null) {
       setState(() {
         startDate = picked;
       });
+    }
   }
 
   Future<void> _endDate(BuildContext context) async {
@@ -41,16 +46,25 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != endDate)
+    if (picked != null) {
       setState(() {
         endDate = picked;
       });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text(
+          "Detail Booking",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 19,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -65,13 +79,6 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Detail Booking",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19,
-                            ),
-                          ),
                           const Text(
                               "Get the best out of derleng by creating an account"),
                           const SizedBox(
@@ -138,8 +145,8 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                           Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey.shade300),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(17))),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(17))),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: DropdownButton<String>(
@@ -160,7 +167,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                       value: valueItem,
                                       child: Text(
                                         valueItem,
-                                        style: TextStyle(),
+                                        style: const TextStyle(),
                                       ),
                                     );
                                   },
@@ -175,44 +182,41 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                             "Phone",
                             style: TextStyle(fontSize: 13),
                           ),
+                          IntlPhoneField(
+                            controller: _phoneController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade300),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color:
+                                        Colors.blue), // Focus edildiğinde renk
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors
+                                        .grey.shade300), // Normal durumda renk
+                              ),
+                            ),
+                            style: const TextStyle(fontSize: 15),
+                            onChanged: (phoneNumber) {
+                              setState(() {
+                                _completeNumber = phoneNumber.completeNumber;
+                              });
+                            },
+                          ),
                           Row(
                             children: [
-                              Container(
-                                height: 60,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey.shade300),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(17))),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(18.0),
-                                  child: Text(
-                                    "+855",
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey.shade300),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(17))),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(18.0),
-                                    child: Text(
-                                      "123 456 789",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              Checkbox(
+                                  value: isCheckedAirportPickUp,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedAirportPickUp = value!;
+                                    });
+                                  }),
+                              const Text("Airport pick-up"),
                             ],
                           ),
                           const SizedBox(
@@ -349,9 +353,12 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            if (dropDownValue != null &&
-                                _guestNameController.text.isNotEmpty &&
-                                _guestCountController.text.isNotEmpty) {
+                            if (_guestNameController.text.isNotEmpty &&
+                                _guestCountController.text.isNotEmpty &&
+                                dropDownValue != null &&
+                                _completeNumber != null &&
+                                startDate != null &&
+                                endDate != null) {
                               // Tüm gerekli alanlar doldurulmuş, diğer sayfaya geçiş yap
                               Navigator.push(
                                 context,
@@ -360,6 +367,9 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                     guestName: _guestNameController.text,
                                     guestCount: _guestCountController.text,
                                     carType: dropDownValue!,
+                                    phoneNumber: _completeNumber!,
+                                    isCheckedAirportPickUp:
+                                        isCheckedAirportPickUp,
                                     startDate: startDate,
                                     endDate: endDate,
                                   ),
@@ -371,12 +381,12 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Warning'),
-                                    content: Text(
+                                    title: const Text('Warning'),
+                                    content: const Text(
                                         'Please fill in all empty fields.'),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: Text('OK'),
+                                        child: const Text('OK'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
