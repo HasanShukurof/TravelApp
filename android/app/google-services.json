@@ -12,7 +12,20 @@
           "package_name": "com.hasanshukurov.san_travel"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "6196449018-de9tou3m0ags5436889ohcjcppbqn1ik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hasanshukurov.san_travel",
+            "certificate_hash": "2bbeb35ab91078ca1c4906c035e4d906ec5cf905"
+          }
+        },
+        {
+          "client_id": "6196449018-7q5abv0j8736rdhfnsh32u0g410ion6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB9K9V7xLV8Dfwnd6xmydL_fw7uQzMpJWo"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6196449018-7q5abv0j8736rdhfnsh32u0g410ion6d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "6196449018-af6u4olmhetpv4d1vc0io8c57b6eqdmf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hasanshukurov.sanTravel"
+              }
+            }
+          ]
         }
       }
     }

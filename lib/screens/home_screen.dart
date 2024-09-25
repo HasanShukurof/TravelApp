@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
   final List<Map<String, dynamic>> allList = [
@@ -83,12 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MessageScreen(),
-                  ),
-                );
+                auth.signOut();
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const MessageScreen(),
+                //   ),
+                // );
               },
               child: Icon(
                 Icons.message_rounded,
