@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:san_travel/screens/deatail_tour_screen.dart';
+import 'package:san_travel/screens/login_screen.dart';
 import 'package:san_travel/screens/message_screen.dart';
+import 'package:san_travel/screens/widgets/heart_icon_widget.dart';
 import 'package:san_travel/widgets/search_text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -86,12 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
             GestureDetector(
               onTap: () {
                 auth.signOut();
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const MessageScreen(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LogInScreen(),
+                  ),
+                );
               },
               child: Icon(
                 Icons.message_rounded,
@@ -174,11 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 top: 5,
                                 right: 5,
-                                child: Image.asset(
-                                  'assets/images/saved_product.png',
-                                  width: 30,
-                                  height: 30,
-                                ),
+                                child: HeartIcon(),
                               ),
                               Positioned(
                                 bottom: 10,

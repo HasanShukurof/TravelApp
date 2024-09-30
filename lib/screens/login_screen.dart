@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:san_travel/screens/auth_service.dart';
 import 'package:san_travel/screens/home_screen.dart';
+import 'package:san_travel/screens/register_screen.dart';
+import 'package:san_travel/services/auth_service.dart';
+import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -14,31 +16,6 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _auth = AuthService();
   bool _isLoading = false;
-
-  Future<void> _signInWithEmail() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final user = await _auth.signInWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      if (user != null) {
-        // Başarılı giriş, ana sayfaya yönlendir
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        _showErrorDialog('Login failed. Please check your credentials.');
-      }
-    } catch (e) {
-      _showErrorDialog('An error occurred: ${e.toString()}');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -129,7 +106,17 @@ class _LogInScreenState extends State<LogInScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0XFFF39C4FF),
                                 ),
-                                onPressed: _signInWithEmail,
+                                onPressed: () {
+                                  _auth.signInWithEmail(_emailController.text,
+                                      _passwordController.text);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BottomNavBar(),
+                                    ),
+                                  );
+                                },
                                 child: const Text(
                                   "Login",
                                   style: TextStyle(
@@ -149,10 +136,20 @@ class _LogInScreenState extends State<LogInScreen> {
                   color: Colors.white,
                   child: Column(
                     children: [
-                      const Text(
-                        'or login with',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 139, 139, 139),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'or login with',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 139, 139, 139),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -172,15 +169,14 @@ class _LogInScreenState extends State<LogInScreen> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen()),
+                                    builder: (context) => const BottomNavBar(),
+                                  ),
                                 );
                               } else {
-                                _showErrorDialog(
-                                    'Google sign-in failed. Please try again.');
+                                _showErrorDialog('Xeta Mesaji - 1');
                               }
                             } catch (e) {
-                              _showErrorDialog(
-                                  'An error occurred: ${e.toString()}');
+                              _showErrorDialog('Xeta Mesaji - 2');
                             } finally {
                               setState(() {
                                 _isLoading = false;
