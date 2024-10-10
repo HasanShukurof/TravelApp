@@ -33,11 +33,15 @@ class _SanTravelState extends State<SanTravel> {
 
   Future<void> _loadUser() async {
     // Kullanıcı durumunu dinleyin
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      setState(() {
-        _user = user; // Kullanıcı durumu güncellendiğinde durumu ayarla
-      });
-    });
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? user) {
+        setState(
+          () {
+            _user = user; // Kullanıcı durumu güncellendiğinde durumu ayarla
+          },
+        );
+      },
+    );
   }
 
   @override

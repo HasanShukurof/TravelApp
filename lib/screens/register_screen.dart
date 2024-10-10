@@ -17,7 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _auth = AuthService();
-  // final _auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   // final _firestore = FirebaseFirestore.instance;
 
   // Future<void> signUp() async {
@@ -124,6 +124,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             // signUp();
                             await _auth.registerWithEmail(_emailController.text,
                                 _passwordController.text);
+                            await _auth.saveUserToFirestore(
+                                auth.currentUser!, 'with email and paswword');
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

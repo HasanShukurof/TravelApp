@@ -15,7 +15,7 @@ class AuthService {
       );
       User? user = result.user;
       if (user != null) {
-        await _saveUserToFirestore(user, 'email');
+        await saveUserToFirestore(user, 'email');
       }
     } catch (e) {
       print('Registration error: ${e.toString()}');
@@ -32,7 +32,7 @@ class AuthService {
       );
       User? user = result.user;
       if (user != null) {
-        await _saveUserToFirestore(user, 'email');
+        await saveUserToFirestore(user, 'email');
       }
     } catch (e) {
       print('Login error: ${e.toString()}');
@@ -52,7 +52,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithCredential(credential);
       User? user = result.user;
       if (user != null) {
-        await _saveUserToFirestore(user, 'google');
+        await saveUserToFirestore(user, 'google');
       }
     } catch (e) {
       print('Google sign in error: ${e.toString()}');
@@ -61,7 +61,7 @@ class AuthService {
   }
 
   // Kullanıcı bilgilerini Firestore'a kaydetme
-  Future<void> _saveUserToFirestore(User user, String signInMethod) async {
+  Future<void> saveUserToFirestore(User user, String signInMethod) async {
     await _firestore.collection('users').doc(user.uid).set({
       'uid': user.uid,
       'email': user.email,
