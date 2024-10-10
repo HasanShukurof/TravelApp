@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:san_travel/screens/message_screen.dart';
 import 'package:san_travel/screens/widgets/heart_icon_widget.dart';
 import 'package:san_travel/widgets/search_text_widget.dart';
 
+import '../model/tour_model.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -17,40 +20,40 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore =
+      FirebaseFirestore.instance; // Firestore instance
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
-  final List<Map<String, dynamic>> allList = [
-    {
-      'image': 'assets/images/gabala.jpeg',
-      'title': 'Gabala Tour',
-      'price': '\$130'
-    },
-    {
-      'image': 'assets/images/quba.jpeg',
-      'title': 'Quba Tour',
-      'price': '\$450'
-    },
-    {
-      'image': 'assets/images/baku.jpeg',
-      'title': 'Baku City Tour',
-      'price': '\$290'
-    },
-    {
-      'image': 'assets/images/shamakhi.jpeg',
-      'title': 'Shamakhi Tour',
-      'price': '\$340'
-    },
-    {
-      'image': 'assets/images/goygol.jpeg',
-      'title': 'Goygol Lake and Nature Retreat Tour',
-      'price': '\$680'
-    },
-  ];
+  List<Map<String, dynamic>> tours = []; // Veri depolamak için
 
   @override
-  void setState(VoidCallback fn) {
-    allList;
-    super.setState(fn);
+  void initState() {
+    super.initState();
+    fetchTours().then((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  Future<void> fetchTours() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await firestore.collection('tourInfo').get();
+      setState(() {
+        tours = querySnapshot.docs
+            .map((doc) {
+              var data = doc.data() as Map<String, dynamic>;
+              return Tour.fromMap({
+                ...data,
+              });
+            })
+            .cast<Map<String, dynamic>>()
+            .toList();
+      });
+    } catch (e) {
+      print("Error fetching tours: $e");
+    }
   }
 
   @override
@@ -132,94 +135,111 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10),
               SizedBox(
                 height: 290,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: allList.length,
-                  itemBuilder: (context, index) {
-                    final package = allList[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailTourScreen(),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          width: 180,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  package['image'],
-                                  width: 180,
-                                  height: 180,
-                                  fit: BoxFit.cover,
+                child: tours.isEmpty
+                    ? Center(
+                        child:
+                            CircularProgressIndicator()) // Veri yüklenirken göster
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: tours.length,
+                        itemBuilder: (context, index) {
+                          final tour = tours[index];
+                          print("Building tour: $tour"); // Her tur için log
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailTourScreen(tour: tour),
                                 ),
-                              ),
-                              Positioned(
-                                top: 5,
-                                right: 5,
-                                child: HeartIcon(),
-                              ),
-                              Positioned(
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Container(
+                                margin: const EdgeInsets.all(5),
+                                width: 180,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: Stack(
                                   children: [
-                                    Text(
-                                      package['title'],
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.black,
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        tour['coverImage'] ??
+                                            'https://via.placeholder.com/150',
+                                        width: 180,
+                                        height: 180,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          print("Error loading image: $error");
+                                          return Icon(Icons.error);
+                                        },
                                       ),
                                     ),
-                                    const Text("1-3 pax"),
-                                    Row(
-                                      children: [
-                                        const Text('Total price: '),
-                                        Text(
-                                          package['price'],
-                                          style: const TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
+                                    Positioned(
+                                      top: 5,
+                                      right: 5,
+                                      child: HeartIcon(),
+                                    ),
+                                    Positioned(
+                                      bottom: 10,
+                                      left: 10,
+                                      right: 10,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            tour['tourName'] ?? 'No Name',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                          Text("${tour['questCount'] ?? 0}"),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                  tour['totalPrice'] ?? '0',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
               const SizedBox(height: 20),
               const Padding(
