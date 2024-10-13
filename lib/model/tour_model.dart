@@ -1,7 +1,7 @@
 class Tour {
   final String tourName;
   final String aboutTour;
-  final int questCount;
+  final String questCount;
   final String totalPrice;
   final String coverImage;
   final List<String> allImages;
@@ -19,7 +19,7 @@ class Tour {
     return Tour(
       tourName: map['tourName'] ?? '',
       aboutTour: map['aboutTour'] ?? '',
-      questCount: map['questCount'] ?? 0,
+      questCount: map['questCount'] ?? '',
       totalPrice: map['totalPrice'] ?? '',
       coverImage: map['coverImage'] ?? '',
       allImages: List<String>.from(map['allImages'] ?? []),

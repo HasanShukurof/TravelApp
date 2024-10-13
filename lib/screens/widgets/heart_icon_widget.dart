@@ -17,6 +17,7 @@ class _HeartIconState extends State<HeartIcon> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      color: Colors.white,
       icon: Icon(
         _isFavorited ? Icons.favorite : Icons.favorite_border,
         color: _isFavorited ? Colors.red : null,

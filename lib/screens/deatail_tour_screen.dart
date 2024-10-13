@@ -6,8 +6,10 @@ import 'package:san_travel/screens/detail_booking_screen.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
 class DetailTourScreen extends StatefulWidget {
-  final Tour tour;
-const DetailTourScreen({super.key, required this.tour});
+  final String tourName;
+  final String aboutTour;
+  const DetailTourScreen(
+      {super.key, required this.tourName, required this.aboutTour});
 
   @override
   State<DetailTourScreen> createState() => _DetailTourScreenState();
@@ -100,9 +102,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                             const SizedBox(
                               height: 15,
                             ),
-                            const Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis condimentum morbi non egestas enim amet sagittis. Proin sed aliquet rhoncus ut pellentesque ullamcorper sit eget ac.Sit nisi, cras amet varius eget egestas pellentesque. Cursus gravida euismod non...",
-                            ),
+                            Text(widget.aboutTour),
                             const SizedBox(
                               height: 35,
                             ),

@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       FirebaseFirestore.instance; // Firestore instance
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
-  List<Map<String, dynamic>> tours = []; // Veri depolamak için
+  List<Tour> tours = []; // Veri depolamak için
 
   @override
   void initState() {
@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     fetchTours().then((_) {
       if (mounted) {
         setState(() {});
+        print("XETA BASH VERDI - 2: ${tours.length}"); // Bu satırı ekleyin
       }
     });
   }
@@ -39,20 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> fetchTours() async {
     try {
       QuerySnapshot querySnapshot =
-          await firestore.collection('tourInfo').get();
-      setState(() {
-        tours = querySnapshot.docs
-            .map((doc) {
-              var data = doc.data() as Map<String, dynamic>;
-              return Tour.fromMap({
-                ...data,
-              });
-            })
-            .cast<Map<String, dynamic>>()
-            .toList();
-      });
+          await FirebaseFirestore.instance.collection('tourInfo').get();
+      tours = querySnapshot.docs
+          .map((doc) => Tour.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+      // setState() çağrısını buradan kaldırın
     } catch (e) {
-      print("Error fetching tours: $e");
+      print("XETA BASH VERDI - 1: $e");
     }
   }
 
@@ -150,8 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailTourScreen(tour: tour),
+                                  builder: (context) => DetailTourScreen(
+                                      tourName: tour.tourName,
+                                      aboutTour: tour.aboutTour),
                                 ),
                               );
                             },
@@ -176,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
-                                        tour['coverImage'] ??
+                                        tour.coverImage ??
                                             'https://via.placeholder.com/150',
                                         width: 180,
                                         height: 180,
@@ -204,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            tour['tourName'] ?? 'No Name',
+                                            tour.tourName ?? 'No Name',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
@@ -213,12 +208,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Text("${tour['questCount'] ?? 0}"),
+                                          Text("${tour.questCount ?? 0}"),
                                           Row(
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                  tour['totalPrice'] ?? '0',
+                                                  tour.totalPrice ?? '0',
                                                   style: const TextStyle(
                                                     color: Colors.blue,
                                                     fontWeight: FontWeight.bold,
