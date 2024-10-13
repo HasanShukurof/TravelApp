@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:san_travel/screens/deatail_tour_screen.dart';
 import 'package:san_travel/screens/login_screen.dart';
-import 'package:san_travel/screens/message_screen.dart';
 import 'package:san_travel/screens/widgets/heart_icon_widget.dart';
 import 'package:san_travel/widgets/search_text_widget.dart';
 
@@ -171,8 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
-                                        tour.coverImage ??
-                                            'https://via.placeholder.com/150',
+                                        tour.coverImage,
                                         width: 180,
                                         height: 180,
                                         fit: BoxFit.cover,
@@ -199,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            tour.tourName ?? 'No Name',
+                                            tour.tourName,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
@@ -208,12 +206,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Text("${tour.questCount ?? 0}"),
+                                          Text(tour.questCount),
                                           Row(
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                  tour.totalPrice ?? '0',
+                                                  tour.totalPrice,
                                                   style: const TextStyle(
                                                     color: Colors.blue,
                                                     fontWeight: FontWeight.bold,

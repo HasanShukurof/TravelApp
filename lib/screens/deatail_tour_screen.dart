@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:san_travel/model/tour_model.dart';
 import 'package:san_travel/screens/detail_booking_screen.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:san_travel/screens/home_screen.dart';
 import 'package:san_travel/screens/register_screen.dart';
 import 'package:san_travel/services/auth_service.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';

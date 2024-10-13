@@ -10,9 +10,7 @@ class AuthService {
   Future<void> registerWithEmail(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: email, 
-        password: password
-      );
+          email: email, password: password);
       User? user = result.user;
       if (user != null) {
         await saveUserToFirestore(user, 'email');
@@ -27,24 +25,25 @@ class AuthService {
   Future<User?> signInWithEmail(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: email, 
-        password: password
-      );
+          email: email, password: password);
       User? user = result.user;
       if (user != null) {
         await saveUserToFirestore(user, 'email');
+        return user; // Kullanıcıyı geri döndürün
       }
     } catch (e) {
       print('Login error: ${e.toString()}');
-      // Hata yönetimi
+      return null; // Hata durumunda null döndürün
     }
+    return null; // Kullanıcı null ise de null döndürün
   }
 
   // Google ile giriş yapma
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
@@ -58,6 +57,7 @@ class AuthService {
       print('Google sign in error: ${e.toString()}');
       // Hata yönetimi
     }
+    return null;
   }
 
   // Kullanıcı bilgilerini Firestore'a kaydetme

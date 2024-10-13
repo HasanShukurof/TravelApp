@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:san_travel/screens/home_screen.dart';
 import 'package:san_travel/services/auth_service.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
