@@ -7,19 +7,26 @@ import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 class DetailTourScreen extends StatefulWidget {
   final String tourName;
   final String aboutTour;
-  const DetailTourScreen(
-      {super.key, required this.tourName, required this.aboutTour});
+  final String questCount;
+  final String price;
+  final String coverImage;
+  final List<String> allImages;
+  const DetailTourScreen({
+    super.key,
+    required this.tourName,
+    required this.aboutTour,
+    required this.questCount,
+    required this.price,
+    required this.coverImage,
+    required this.allImages,
+  });
 
   @override
   State<DetailTourScreen> createState() => _DetailTourScreenState();
 }
 
 class _DetailTourScreenState extends State<DetailTourScreen> {
-  final List<String> images = [
-    'assets/images/gabala.jpeg',
-    'assets/images/goygol.jpeg',
-    'assets/images/baku.jpeg',
-  ];
+  final List<String> images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +48,8 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                         // Ekran genişliğini alır
                         child: Stack(
                           children: [
-                            Image.asset(
-                              'assets/images/gabala.jpeg',
+                            Image.network(
+                              widget.coverImage,
                               height: 400,
                               fit: BoxFit
                                   .fill, // Resmi yatay olarak ekranı kaplayacak şekilde ayarlar
@@ -317,7 +324,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                   mainAxisSpacing:
                                       10.0, // Satırlar arasındaki boşluk
                                 ),
-                                itemCount: images.length,
+                                itemCount: widget.allImages.length,
                                 itemBuilder: (context, index) {
                                   return ClipRRect(
                                     borderRadius: BorderRadius.only(
@@ -330,8 +337,8 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                       bottomRight: Radius.circular(
                                           index % 2 == 1 ? 10 : 0),
                                     ),
-                                    child: Image.asset(
-                                      images[index],
+                                    child: Image.network(
+                                      widget.allImages[index],
                                       fit: BoxFit
                                           .cover, // Görüntüyü kapsayıcıya sığdır
                                     ),

@@ -28,12 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchTours().then((_) {
-      if (mounted) {
-        setState(() {});
-        print("XETA BASH VERDI - 2: ${tours.length}"); // Bu satırı ekleyin
-      }
-    });
+    fetchTours().then(
+      (_) {
+        if (mounted) {
+          setState(() {});
+          print("XETA BASH VERDI - 2: ${tours.length}"); // Bu satırı ekleyin
+        }
+      },
+    );
   }
 
   Future<void> fetchTours() async {
@@ -145,7 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => DetailTourScreen(
                                       tourName: tour.tourName,
-                                      aboutTour: tour.aboutTour),
+                                      aboutTour: tour.aboutTour,
+                                      questCount: tour.questCount,
+                                      price: tour.totalPrice,
+                                      coverImage: tour.coverImage,
+                                      allImages: tour.allImages),
                                 ),
                               );
                             },
