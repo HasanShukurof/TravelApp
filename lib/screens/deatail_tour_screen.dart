@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:san_travel/screens/detail_booking_screen.dart';
+import 'package:san_travel/screens/full_screen_image.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
 class DetailTourScreen extends StatefulWidget {
@@ -31,6 +32,9 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(""),
+      ),
       body: Center(
         child: Column(
           children: [
@@ -80,12 +84,12 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                 ),
                               ),
                             ),
-                            const Positioned(
+                            Positioned(
                               bottom: 25,
                               left: 45,
                               child: Text(
-                                "Gabala Tour",
-                                style: TextStyle(
+                                widget.tourName,
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 21,
                                     fontWeight: FontWeight.bold),
@@ -318,34 +322,45 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                 padding: const EdgeInsets.all(5.0),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, // Her satırda iki sütun
-                                  crossAxisSpacing:
-                                      10.0, // Sütunlar arasındaki boşluk
-                                  mainAxisSpacing:
-                                      10.0, // Satırlar arasındaki boşluk
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10.0,
+                                  mainAxisSpacing: 10.0,
                                 ),
                                 itemCount: widget.allImages.length,
                                 itemBuilder: (context, index) {
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(
-                                          index % 2 == 0 ? 10 : 0),
-                                      bottomLeft: Radius.circular(
-                                          index % 2 == 0 ? 10 : 0),
-                                      topRight: Radius.circular(
-                                          index % 2 == 1 ? 10 : 0),
-                                      bottomRight: Radius.circular(
-                                          index % 2 == 1 ? 10 : 0),
-                                    ),
-                                    child: Image.network(
-                                      widget.allImages[index],
-                                      fit: BoxFit
-                                          .cover, // Görüntüyü kapsayıcıya sığdır
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // Tıklandığında yeni bir sayfa aç
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => FullscreenImage(
+                                            images: widget.allImages,
+                                            initialIndex: index,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            index % 2 == 0 ? 10 : 0),
+                                        bottomLeft: Radius.circular(
+                                            index % 2 == 0 ? 10 : 0),
+                                        topRight: Radius.circular(
+                                            index % 2 == 1 ? 10 : 0),
+                                        bottomRight: Radius.circular(
+                                            index % 2 == 1 ? 10 : 0),
+                                      ),
+                                      child: Image.network(
+                                        widget.allImages[index],
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   );
                                 },
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
