@@ -7,35 +7,68 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // E-posta ile kayıt olma
-  Future<void> registerWithEmail(String email, String password) async {
+  Future<User?> registerWithEmail(
+      String name, String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
-      if (user != null) {
-        await saveUserToFirestore(user, 'email');
-      }
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await _firestore.collection('users').doc(userCredential.user?.uid).set(
+        {
+          'userId': userCredential.user?.uid,
+          'userName': name,
+          'userEmail': userCredential.user?.email,
+          'createdDate': DateTime.now(),
+        },
+      );
+      return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      throw _handleFirebaseAuthError(e);
     } catch (e) {
-      print('Registration error: ${e.toString()}');
-      // Hata yönetimi
+      throw 'Registration failed $e';
     }
   }
 
   // E-posta ile giriş yapma
   Future<User?> signInWithEmail(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
-      if (user != null) {
-        await saveUserToFirestore(user, 'email');
-        return user; // Kullanıcıyı geri döndürün
-      }
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      // Firebase hatalarını yakalayıp yeniden fırlatın
+      throw _handleFirebaseAuthError(e);
     } catch (e) {
-      print('Login error: ${e.toString()}');
-      return null; // Hata durumunda null döndürün
+      // Diğer hataları yakalayıp yeniden fırlatın
+      throw 'An unexpected error occurred';
     }
-    return null; // Kullanıcı null ise de null döndürün
+  }
+
+// Firebase hata mesajlarını düzenlemek için yardımcı metod
+  String _handleFirebaseAuthError(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'user-not-found':
+        return 'No user found with this email';
+      case 'wrong-password':
+        return 'Wrong password';
+      case 'invalid-email':
+        return 'Invalid email address';
+      case 'user-disabled':
+        return 'This user account has been disabled';
+      case 'too-many-requests':
+        return 'Too many attempts. Please try again later';
+      case 'weak-password':
+        return 'Password is too weak';
+      case 'email-already-in-use':
+        return 'This email is already registered';
+      default:
+        return 'Authentication failed';
+    }
   }
 
   // Google ile giriş yapma

@@ -92,9 +92,11 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                             height: 60,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade300),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(17))),
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(17),
+                              ),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 left: 18,

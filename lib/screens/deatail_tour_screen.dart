@@ -33,7 +33,12 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        title: Text(
+          "Tour Detail",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+        ),
       ),
       body: Center(
         child: Column(
@@ -58,32 +63,32 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                               fit: BoxFit
                                   .fill, // Resmi yatay olarak ekranı kaplayacak şekilde ayarlar
                             ),
-                            Positioned(
-                              top: 65,
-                              right: 45,
-                              child: Image.asset(
-                                'assets/images/saved_product.png',
-                              ),
-                            ),
-                            Positioned(
-                              top: 65,
-                              left: 25,
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BottomNavBar(),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back_rounded,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
+                            // Positioned(
+                            //   top: 65,
+                            //   right: 45,
+                            //   child: Image.asset(
+                            //     'assets/images/saved_product.png',
+                            //   ),
+                            // ),
+                            // Positioned(
+                            //   top: 65,
+                            //   left: 25,
+                            //   child: IconButton(
+                            //     onPressed: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               const BottomNavBar(),
+                            //         ),
+                            //       );
+                            //     },
+                            //     icon: const Icon(
+                            //       Icons.arrow_back_rounded,
+                            //       color: Colors.black,
+                            //     ),
+                            //   ),
+                            // ),
                             Positioned(
                               bottom: 25,
                               left: 45,

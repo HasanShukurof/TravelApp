@@ -21,44 +21,48 @@ class SanTravel extends StatefulWidget {
 }
 
 class _SanTravelState extends State<SanTravel> {
-  User? _user;
-  bool _isLoading = true;
+  // User? _user;
+  // bool _isLoading = true;
+  final _authStateChanges = FirebaseAuth.instance.authStateChanges();
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUser();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _loadUser();
+  // }
 
-  Future<void> _loadUser() async {
-    FirebaseAuth.instance.authStateChanges().listen(
-      (User? user) {
-        setState(
-          () {
-            _user = user;
-            _isLoading = false; // Yükleme bittiğinde bayrağı false yap
-          },
-        );
-      },
-    );
-  }
+  // Future<void> _loadUser() async {
+  //   FirebaseAuth.instance.authStateChanges().listen(
+  //     (User? user) {
+  //       setState(
+  //         () {
+  //           _user = user;
+  //           _isLoading = false; // Yükleme bittiğinde bayrağı false yap
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      // Oturum durumu kontrol edilirken geçici bir yüklenme ekranı göster
-      return const MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: _user == null ? const LogInScreen() : const BottomNavBar(),
+      home: StreamBuilder<User?>(
+        stream: _authStateChanges,
+        builder: (context, snapshot) {
+          // Bağlantı bekleniyorsa loading göster
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Kullanıcı oturum açmışsa ana sayfaya, açmamışsa login sayfasına yönlendir
+          if (snapshot.hasData) {
+            return const BottomNavBar();
+          }
+          return const LogInScreen();
+        },
+      ),
     );
   }
 }

@@ -13,6 +13,7 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   final AuthService _auth = AuthService();
   bool _isLoading = false;
 
@@ -36,9 +37,6 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
@@ -50,6 +48,9 @@ class _LogInScreenState extends State<LogInScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
+                            SizedBox(
+                              height: 60,
+                            ),
                             const Text(
                               "Login",
                               style: TextStyle(
@@ -64,7 +65,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 labelText: 'Email',
                                 labelStyle:
                                     const TextStyle(color: Colors.black),
-                                hintText: 'Email',
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -85,7 +85,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 labelText: 'Password',
                                 labelStyle:
                                     const TextStyle(color: Colors.black),
-                                hintText: 'Password',
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -105,16 +104,36 @@ class _LogInScreenState extends State<LogInScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0XFFF39C4FF),
                                 ),
-                                onPressed: () {
-                                  _auth.signInWithEmail(_emailController.text,
-                                      _passwordController.text);
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BottomNavBar(),
-                                    ),
-                                  );
+                                onPressed: () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  try {
+                                    final user = await _auth.signInWithEmail(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                                    if (user != null && mounted) {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => BottomNavBar(),
+                                        ),
+                                        (Route<dynamic> route) => false,
+                                      );
+                                    }
+                                  } catch (e) {
+                                    if (mounted) {
+                                      _showErrorDialog(e.toString());
+                                    }
+                                    print('PROBLEM BASH VERDI: $e');
+                                  } finally {
+                                    if (mounted) {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    }
+                                  }
                                 },
                                 child: const Text(
                                   "Login",
@@ -124,6 +143,22 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(),
+                                    ));
+                              },
+                              child: const Text(
+                                'Create a new account',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -136,16 +171,16 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RegisterScreen(),
-                            ),
-                          );
-                        },
+                        // onTap: () {
+                        //   Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => const RegisterScreen(),
+                        //     ),
+                        //   );
+                        // },
                         child: const Text(
-                          'or login with',
+                          'Or continue with',
                           style: TextStyle(
                             color: Color.fromARGB(255, 139, 139, 139),
                           ),
