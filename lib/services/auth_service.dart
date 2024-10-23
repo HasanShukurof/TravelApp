@@ -20,8 +20,10 @@ class AuthService {
         {
           'userId': userCredential.user?.uid,
           'userName': name,
+          'displayName': userCredential.user?.displayName,
           'userEmail': userCredential.user?.email,
           'createdDate': DateTime.now(),
+          'shifre': password
         },
       );
       return userCredential.user;

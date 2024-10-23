@@ -56,7 +56,10 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         title: const Text(
           "Detail Booking",
           style: TextStyle(
@@ -314,6 +317,30 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          const Card(
+                            elevation: 2.2,
+                            color: Color(0XFFF0FA3E2),
+                            child: SizedBox(
+                              height: 60,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Calculate",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 30,
                           ),
                         ],
                       ),

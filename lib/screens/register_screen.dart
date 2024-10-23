@@ -73,10 +73,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-      ),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -90,6 +86,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
+                            const SizedBox(
+                              height: 60,
+                            ),
                             const Text(
                               "Register",
                               style: TextStyle(
@@ -99,6 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 30),
                             TextField(
+                              keyboardType: TextInputType.name,
                               controller: _fullNameController,
                               decoration: InputDecoration(
                                 labelText: 'Full name',
@@ -118,6 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 20),
                             TextField(
+                              keyboardType: TextInputType.emailAddress,
                               controller: _emailController,
                               decoration: InputDecoration(
                                 labelText: 'Email',
@@ -138,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 20),
                             TextField(
+                              keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
                               obscureText: true,
                               decoration: InputDecoration(
