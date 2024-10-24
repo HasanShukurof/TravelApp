@@ -201,7 +201,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             });
                             try {
                               final user = await _auth.signInWithGoogle();
-                              if (user != null) {
+                              if (user != null && mounted) {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -209,14 +209,22 @@ class _LogInScreenState extends State<LogInScreen> {
                                   ),
                                 );
                               } else {
-                                _showErrorDialog('Xeta Mesaji - 1');
+                                if (mounted) {
+                                  _showErrorDialog(
+                                      'Google ile giriş başarısız oldu. Lütfen tekrar deneyin.');
+                                }
                               }
                             } catch (e) {
-                              _showErrorDialog('Xeta Mesaji - 2');
+                              if (mounted) {
+                                _showErrorDialog(
+                                    'Giriş hatası: ${e.toString()}');
+                              }
                             } finally {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
                             }
                           },
                           child: Padding(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,14 +18,15 @@ class AuthService {
         password: password,
       );
 
+      final user = userCredential.user;
       await _firestore.collection('users').doc(userCredential.user?.uid).set(
         {
           'userId': userCredential.user?.uid,
           'userName': name,
-          'displayName': userCredential.user?.displayName,
-          'userEmail': userCredential.user?.email,
-          'createdDate': DateTime.now(),
-          'shifre': password
+          'userImage': user?.photoURL,
+          'displayName': user?.displayName,
+          'userEmail': user?.email,
+          'createdDate': FieldValue.serverTimestamp(),
         },
       );
       return userCredential.user;
@@ -76,23 +79,73 @@ class AuthService {
   // Google ile giriş yapma
   Future<User?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-      UserCredential result = await _auth.signInWithCredential(credential);
-      User? user = result.user;
-      if (user != null) {
-        await saveUserToFirestore(user, 'google');
+      // Google Sign-In nesnesini oluştur
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      // Mevcut oturumları temizle
+      await googleSignIn.signOut();
+
+      // Yeni giriş isteği
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        print('Google sign in cancelled');
+        return null;
       }
+
+      try {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+        final User? user = userCredential.user;
+
+        if (user != null) {
+          try {
+            await _firestore.collection('users').doc(user.uid).set({
+              'userId': user.uid,
+              'userName': user.displayName,
+              'userImage': user.photoURL,
+              'displayName': user.displayName,
+              'userEmail': user.email,
+              'createdDate':
+                  FieldValue.serverTimestamp(), // serverTimestamp kullan
+            }, SetOptions(merge: true));
+          } catch (firestoreError) {
+            print('Firestore error: $firestoreError');
+            // Firestore hatası olsa bile kullanıcı girişi başarılı sayılabilir
+          }
+          return user;
+        }
+      } catch (authError) {
+        print('Firebase auth error: $authError');
+        rethrow;
+      }
+
+      return null;
     } catch (e) {
-      print('Google sign in error: ${e.toString()}');
-      // Hata yönetimi
+      print('Google sign in error: $e');
+      rethrow;
     }
-    return null;
+  }
+
+  Future<UserCredential?> signGoogle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+
+      final googleAuth = await googleUser?.authentication;
+
+      final cred = GoogleAuthProvider.credential(
+          idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
+
+      return await _auth.signInWithCredential(cred);
+    } catch (e) {
+      print('Xeta Bash Verdi: ${e.toString()}');
+    }
   }
 
   // Kullanıcı bilgilerini Firestore'a kaydetme
@@ -108,6 +161,11 @@ class AuthService {
 
   // Çıkış yapma
   Future<void> signOut() async {
-    await _auth.signOut();
+    try {
+      await _auth.signOut();
+      await GoogleSignIn().signOut();
+    } catch (e) {
+      print('Sign out error: ${e.toString()}');
+    }
   }
 }

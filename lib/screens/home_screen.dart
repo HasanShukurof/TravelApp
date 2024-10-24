@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:san_travel/screens/deatail_tour_screen.dart';
 import 'package:san_travel/screens/login_screen.dart';
 import 'package:san_travel/screens/widgets/heart_icon_widget.dart';
+import 'package:san_travel/services/auth_service.dart';
 import 'package:san_travel/widgets/search_text_widget.dart';
 
 import '../model/tour_model.dart';
@@ -32,10 +33,21 @@ class _HomeScreenState extends State<HomeScreen> {
       (_) {
         if (mounted) {
           setState(() {});
-          print("XETA BASH VERDI - 2: ${tours.length}"); // Bu satırı ekleyin
+          users();
         }
       },
     );
+  }
+
+  Future<void> users() async {
+    try {
+      QuerySnapshot querySnapshot = await firestore.collection('users').get();
+      final documents = querySnapshot.docs;
+
+      for (var element in documents) {
+        final username = print('Istifadeci Adlari:  ${element['userName']}');
+      }
+    } catch (e) {}
   }
 
   Future<void> fetchTours() async {
@@ -87,13 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {
-                auth.signOut();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LogInScreen(),
-                  ),
-                );
+                AuthService().signOut();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LogInScreen(),
+                    ),
+                    (Route<dynamic> route) => false);
               },
               child: Icon(
                 Icons.message_rounded,

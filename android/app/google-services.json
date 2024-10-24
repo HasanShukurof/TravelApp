@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "6196449018-de9tou3m0ags5436889ohcjcppbqn1ik.apps.googleusercontent.com",
+          "client_id": "6196449018-turfk3fd36vl7kssctood18orc6se2vk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hasanshukurov.san_travel",
-            "certificate_hash": "2bbeb35ab91078ca1c4906c035e4d906ec5cf905"
+            "certificate_hash": "bc319d625c9c4d1480c7c8fbcef3ae8c75c5f3af"
           }
         },
         {
