@@ -1,15 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:san_travel/screens/login_screen.dart';
+import 'package:san_travel/services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.userId});
+
+  final String? userId;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<String?> getUserImage(String? uid) async {
+    if (uid == null) return null;
+    try {
+      DocumentSnapshot userData =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (userData.exists) {
+        return userData['userImage'];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,18 +50,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Row(
                 children: [
-                  ClipOval(
-                    child: Container(
-                      width: 90,
-                      height: 90,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        'assets/images/hasan_profile_photo.jpeg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  FutureBuilder<String?>(
+                    future: getUserImage(widget.userId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Yüklenme göstergesi olarak placeholder kullanıyoruz.
+                        return ClipOval(
+                          child: Container(
+                            width: 90,
+                            height: 90,
+                            color: Colors.grey.shade300,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        // Profil resmi gösteriliyor.
+                        return ClipOval(
+                          child: Image.network(
+                            snapshot.data!,
+                            width: 90,
+                            height: 90,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      } else {
+                        // Profil resmi yoksa varsayılan bir resim veya simge gösterebilirsiniz.
+                        return ClipOval(
+                          child: Container(
+                            width: 90,
+                            height: 90,
+                            color: Colors.grey.shade300,
+                            child: const Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const SizedBox(
                     width: 30,
@@ -153,20 +203,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(
                 height: 45,
               ),
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400),
-                    borderRadius: BorderRadius.circular(11)),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Log Out',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  AuthService().signOut();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LogInScreen(),
+                      ),
+                      (Route<dynamic> route) => false);
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(11)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Log Out',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

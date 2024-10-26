@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>6196449018-af6u4olmhetpv4d1vc0io8c57b6eqdmf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.6196449018-af6u4olmhetpv4d1vc0io8c57b6eqdmf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>6196449018-de9tou3m0ags5436889ohcjcppbqn1ik.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBjwH2kumtO_wlm19D042EHHo3bvrRsvXQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>6196449018</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hasanshukurov.sanTravel</string>
+	<key>PROJECT_ID</key>
+	<string>tripaz-travel-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tripaz-travel-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:6196449018:ios:5a321498c3cb31391ac343</string>
+</dict>
+</plist>

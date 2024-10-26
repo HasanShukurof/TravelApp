@@ -5,7 +5,9 @@ import 'package:san_travel/screens/profile_screen.dart';
 import 'package:san_travel/screens/wish_list_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  const BottomNavBar({super.key, this.userId});
+
+  final String? userId;
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -13,12 +15,18 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int myCurrentIndex = 0;
-  List screens = const [
-    HomeScreen(),
-    WishListScreen(),
-    NotificationScreen(),
-    ProfileScreen(),
-  ];
+  late final List<Widget> screens;
+
+  @override
+  void initState() {
+    super.initState();
+    screens = [
+      HomeScreen(userId: widget.userId),
+      const WishListScreen(),
+      const NotificationScreen(),
+      ProfileScreen(userId: widget.userId),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

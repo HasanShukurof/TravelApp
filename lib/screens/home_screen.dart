@@ -12,7 +12,9 @@ import 'package:san_travel/widgets/search_text_widget.dart';
 import '../model/tour_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.userId});
+
+  final String? userId;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -63,6 +65,24 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<String?> getUserName(String? uid) async {
+    if (uid == null) return null;
+    try {
+      DocumentSnapshot userDoc =
+          await firestore.collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        return userDoc['userName'];
+      } else {
+        print("Kullanıcı Firestore'da bulunamadı.");
+        return null;
+      }
+    } catch (e) {
+      print("Kullanıcı adını alırken hata: $e");
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,17 +93,27 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hello Hasan",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+                      FutureBuilder<String?>(
+                        future: getUserName(widget.userId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Text('Loading...');
+                          } else if (snapshot.hasError) {
+                            return Text('Error');
+                          } else if (snapshot.hasData) {
+                            return Text('Welcome, ${snapshot.data}');
+                          } else {
+                            return Text('User');
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -95,22 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                AuthService().signOut();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LogInScreen(),
-                    ),
-                    (Route<dynamic> route) => false);
-              },
-              child: Icon(
-                Icons.message_rounded,
-                color: Colors.blue.shade500,
-                size: 33,
               ),
             ),
           ],

@@ -116,10 +116,12 @@ class _LogInScreenState extends State<LogInScreen> {
                                       _passwordController.text,
                                     );
                                     if (user != null && mounted) {
+                                      final userId = user.uid;
                                       Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => BottomNavBar(),
+                                          builder: (context) =>
+                                              BottomNavBar(userId: userId),
                                         ),
                                         (Route<dynamic> route) => false,
                                       );
@@ -202,10 +204,13 @@ class _LogInScreenState extends State<LogInScreen> {
                             try {
                               final user = await _auth.signInWithGoogle();
                               if (user != null && mounted) {
+                                final userId = user.uid;
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const BottomNavBar(),
+                                    builder: (context) => BottomNavBar(
+                                      userId: userId,
+                                    ),
                                   ),
                                 );
                               } else {
