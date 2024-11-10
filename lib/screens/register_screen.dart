@@ -18,6 +18,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _auth = AuthService();
   final auth = FirebaseAuth.instance;
+  bool _isPasswordVisible =
+      false; // Şifrenin görünürlüğünü kontrol eden değişken
+
   // final _firestore = FirebaseFirestore.instance;
 
   // Future<void> signUp() async {
@@ -141,7 +144,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             TextField(
                               keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
-                              obscureText: true,
+                              obscureText:
+                                  !_isPasswordVisible, // Şifre gizli mi, değil mi?,
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle:
@@ -156,6 +160,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
                                       color: Color(0xFF94A3B8)),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible =
+                                          !_isPasswordVisible; // Değeri tersine çevirir
+                                    });
+                                  },
                                 ),
                               ),
                             ),

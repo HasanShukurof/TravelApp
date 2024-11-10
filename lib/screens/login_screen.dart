@@ -17,6 +17,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
   final AuthService _auth = AuthService();
   bool _isLoading = false;
+  bool _isPasswordVisible = false;
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -83,7 +84,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             TextField(
                               keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
-                              obscureText: true,
+                              obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle:
@@ -97,6 +98,19 @@ class _LogInScreenState extends State<LogInScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
                                       color: Color(0xFF94A3B8)),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible =
+                                          !_isPasswordVisible; // Şifre görünürlüğünü değiştirir
+                                    });
+                                  },
                                 ),
                               ),
                             ),
