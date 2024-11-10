@@ -7,6 +7,7 @@ import 'package:san_travel/screens/deatail_tour_screen.dart';
 import 'package:san_travel/screens/login_screen.dart';
 import 'package:san_travel/screens/widgets/heart_icon_widget.dart';
 import 'package:san_travel/services/auth_service.dart';
+import 'package:san_travel/services/user_preferences.dart';
 import 'package:san_travel/widgets/search_text_widget.dart';
 
 import '../model/tour_model.dart';
@@ -101,23 +102,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       FutureBuilder<String?>(
-                        future: getUserName(widget.userId),
+                        future: UserPreferences.getUserName(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Text('Loading...');
+                            return const Text('Loading...');
                           } else if (snapshot.hasError) {
-                            return Text('Error');
+                            return const Text('Error');
                           } else if (snapshot.hasData) {
                             return Text('Welcome, ${snapshot.data}');
                           } else {
-                            return Text('User');
+                            return const Text('User');
                           }
                         },
                       ),
                     ],
                   ),
-                  Text(
+                  const Text(
                     "Let's Discover the best places",
                     style: TextStyle(
                       fontWeight: FontWeight.w200,

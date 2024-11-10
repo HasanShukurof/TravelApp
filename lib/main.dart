@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:san_travel/firebase_options.dart';
 import 'package:san_travel/screens/login_screen.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
+import 'package:san_travel/services/user_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,28 +22,7 @@ class SanTravel extends StatefulWidget {
 }
 
 class _SanTravelState extends State<SanTravel> {
-  // User? _user;
-  // bool _isLoading = true;
   final _authStateChanges = FirebaseAuth.instance.authStateChanges();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadUser();
-  // }
-
-  // Future<void> _loadUser() async {
-  //   FirebaseAuth.instance.authStateChanges().listen(
-  //     (User? user) {
-  //       setState(
-  //         () {
-  //           _user = user;
-  //           _isLoading = false; // Yükleme bittiğinde bayrağı false yap
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +31,10 @@ class _SanTravelState extends State<SanTravel> {
       home: StreamBuilder<User?>(
         stream: _authStateChanges,
         builder: (context, snapshot) {
-          // Bağlantı bekleniyorsa loading göster
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // Kullanıcı oturum açmışsa ana sayfaya, açmamışsa login sayfasına yönlendir
           if (snapshot.hasData) {
             return const BottomNavBar();
           }

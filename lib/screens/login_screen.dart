@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:san_travel/screens/register_screen.dart';
 import 'package:san_travel/services/auth_service.dart';
+import 'package:san_travel/services/user_preferences.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -117,6 +118,9 @@ class _LogInScreenState extends State<LogInScreen> {
                                     );
                                     if (user != null && mounted) {
                                       final userId = user.uid;
+                                      // Kullanıcı bilgilerini SharedPreferences'e kaydet
+                                      await UserPreferences.saveUserData(
+                                          userId, user.displayName ?? 'User');
                                       Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
@@ -205,12 +209,14 @@ class _LogInScreenState extends State<LogInScreen> {
                               final user = await _auth.signInWithGoogle();
                               if (user != null && mounted) {
                                 final userId = user.uid;
+                                // Kullanıcı bilgilerini SharedPreferences'e kaydet
+                                await UserPreferences.saveUserData(
+                                    userId, user.displayName ?? 'User');
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => BottomNavBar(
-                                      userId: userId,
-                                    ),
+                                    builder: (context) =>
+                                        BottomNavBar(userId: userId),
                                   ),
                                 );
                               } else {
