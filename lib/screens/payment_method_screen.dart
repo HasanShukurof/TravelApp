@@ -12,6 +12,9 @@ class PaymentMethodScreen extends StatefulWidget {
   final bool isCheckedAirportPickUp;
   final DateTime? startDate;
   final DateTime? endDate;
+  final String userName;
+  final String userEmail;
+  final String tourName;
 
   const PaymentMethodScreen({
     super.key,
@@ -22,6 +25,9 @@ class PaymentMethodScreen extends StatefulWidget {
     required this.isCheckedAirportPickUp,
     required this.startDate,
     required this.endDate,
+    required this.userName,
+    required this.userEmail,
+    required this.tourName,
   });
 
   @override
@@ -42,10 +48,13 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       'startDate': widget.startDate?.toIso8601String(),
       'endDate': widget.endDate?.toIso8601String(),
       'orderDate': FieldValue.serverTimestamp(),
+      'userName': widget.userName,
+      'userEmail': widget.userEmail,
+      'tourName': widget.tourName,
     };
 
     try {
-      await firestore.collection("Sifarish Detallari").add(data);
+      await firestore.collection("Order Details").add(data);
       Navigator.push(
         context,
         MaterialPageRoute(

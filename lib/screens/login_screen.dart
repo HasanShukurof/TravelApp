@@ -166,7 +166,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               ),
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 30,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -272,6 +272,9 @@ class _LogInScreenState extends State<LogInScreen> {
                             ),
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                     ],
                   ),

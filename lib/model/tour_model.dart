@@ -3,6 +3,9 @@ class Tour {
   final String aboutTour;
   final String questCount;
   final String totalPrice;
+  final String minivanPrice;
+  final String sedanPrice;
+  final String airportPickUpPrice;
   final String coverImage;
   final List<String> allImages;
 
@@ -11,6 +14,9 @@ class Tour {
     required this.aboutTour,
     required this.questCount,
     required this.totalPrice,
+    required this.minivanPrice,
+    required this.sedanPrice,
+    required this.airportPickUpPrice,
     required this.coverImage,
     required this.allImages,
   });
@@ -23,6 +29,9 @@ class Tour {
       totalPrice: map['totalPrice'] ?? '',
       coverImage: map['coverImage'] ?? '',
       allImages: List<String>.from(map['allImages'] ?? []),
+      minivanPrice: map['minivanPrice'] ?? '',
+      sedanPrice: map['sedanPrice'] ?? '',
+      airportPickUpPrice: map['airportPickUpPrice'] ?? '',
     );
   }
 }

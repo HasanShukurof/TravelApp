@@ -6,20 +6,30 @@ import 'package:san_travel/screens/full_screen_image.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
 class DetailTourScreen extends StatefulWidget {
+  final String userName;
+  final String userEmail;
   final String tourName;
   final String aboutTour;
   final String questCount;
-  final String price;
+  final String totalPrice;
   final String coverImage;
   final List<String> allImages;
+  final dynamic sedanPrice;
+  final dynamic minivanPrice;
+  final dynamic airportPickUpPrice;
   const DetailTourScreen({
     super.key,
+    required this.userName,
+    required this.userEmail,
     required this.tourName,
     required this.aboutTour,
     required this.questCount,
-    required this.price,
+    required this.totalPrice,
     required this.coverImage,
     required this.allImages,
+    required this.sedanPrice,
+    required this.minivanPrice,
+    required this.airportPickUpPrice,
   });
 
   @override
@@ -36,7 +46,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Tour Detail",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
         ),
@@ -64,32 +74,6 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                               fit: BoxFit
                                   .fill, // Resmi yatay olarak ekranı kaplayacak şekilde ayarlar
                             ),
-                            // Positioned(
-                            //   top: 65,
-                            //   right: 45,
-                            //   child: Image.asset(
-                            //     'assets/images/saved_product.png',
-                            //   ),
-                            // ),
-                            // Positioned(
-                            //   top: 65,
-                            //   left: 25,
-                            //   child: IconButton(
-                            //     onPressed: () {
-                            //       Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               const BottomNavBar(),
-                            //         ),
-                            //       );
-                            //     },
-                            //     icon: const Icon(
-                            //       Icons.arrow_back_rounded,
-                            //       color: Colors.black,
-                            //     ),
-                            //   ),
-                            // ),
                             Positioned(
                               bottom: 25,
                               left: 45,
@@ -406,7 +390,14 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const DetailBookingScreen(),
+                            builder: (context) => DetailBookingScreen(
+                              userName: widget.userName,
+                              userEmail: widget.userEmail,
+                              tourName: widget.tourName,
+                              sedanPrice: widget.sedanPrice,
+                              minivanPrice: widget.minivanPrice,
+                              airportPickUpPrice: widget.airportPickUpPrice,
+                            ),
                           ),
                         ),
                         child: const Card(

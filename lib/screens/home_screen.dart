@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
   List<Tour> tours = []; // Veri depolamak için
+  String? currentUsername = '';
 
   @override
   void initState() {
@@ -110,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           } else if (snapshot.hasError) {
                             return const Text('Error');
                           } else if (snapshot.hasData) {
+                            currentUsername = snapshot.data;
                             return Text('Welcome, ${snapshot.data}');
                           } else {
                             return const Text('User');
@@ -160,9 +162,9 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 290,
                 child: tours.isEmpty
-                    ? Center(
-                        child:
-                            CircularProgressIndicator()) // Veri yüklenirken göster
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      ) // Veri yüklenirken göster
                     : ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: tours.length,
@@ -175,12 +177,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailTourScreen(
-                                      tourName: tour.tourName,
-                                      aboutTour: tour.aboutTour,
-                                      questCount: tour.questCount,
-                                      price: tour.totalPrice,
-                                      coverImage: tour.coverImage,
-                                      allImages: tour.allImages),
+                                    userName: currentUsername ?? '',
+                                    userEmail: auth.currentUser!.email ?? '',
+                                    tourName: tour.tourName,
+                                    aboutTour: tour.aboutTour,
+                                    questCount: tour.questCount,
+                                    totalPrice: tour.totalPrice,
+                                    sedanPrice: tour.sedanPrice,
+                                    minivanPrice: tour.minivanPrice,
+                                    airportPickUpPrice: tour.airportPickUpPrice,
+                                    coverImage: tour.coverImage,
+                                    allImages: tour.allImages,
+                                  ),
                                 ),
                               );
                             },
@@ -246,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                  tour.totalPrice,
+                                                  "Total price: ${tour.totalPrice} AZN",
                                                   style: const TextStyle(
                                                     color: Colors.blue,
                                                     fontWeight: FontWeight.bold,

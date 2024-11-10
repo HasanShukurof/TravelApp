@@ -5,7 +5,22 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:san_travel/screens/payment_method_screen.dart';
 
 class DetailBookingScreen extends StatefulWidget {
-  const DetailBookingScreen({super.key});
+  final String userName;
+  final String userEmail;
+  final String tourName;
+  final dynamic sedanPrice;
+  final dynamic minivanPrice;
+  final dynamic airportPickUpPrice;
+
+  const DetailBookingScreen({
+    super.key,
+    required this.userName,
+    required this.userEmail,
+    required this.tourName,
+    required this.sedanPrice,
+    required this.minivanPrice,
+    required this.airportPickUpPrice,
+  });
 
   @override
   State<DetailBookingScreen> createState() => _DetailBookingScreenState();
@@ -390,14 +405,17 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PaymentMethodScreen(
-                                guestName: _guestNameController.text,
-                                guestCount: _guestCountController.text,
-                                carType: dropDownValue!,
-                                phoneNumber: _completeNumber!,
-                                isCheckedAirportPickUp: isCheckedAirportPickUp,
-                                startDate: startDate,
-                                endDate: endDate,
-                              ),
+                                  guestName: _guestNameController.text,
+                                  guestCount: _guestCountController.text,
+                                  carType: dropDownValue!,
+                                  phoneNumber: _completeNumber!,
+                                  isCheckedAirportPickUp:
+                                      isCheckedAirportPickUp,
+                                  startDate: startDate,
+                                  endDate: endDate,
+                                  userName: widget.userName,
+                                  userEmail: widget.userEmail,
+                                  tourName: widget.tourName),
                             ),
                           );
                         } else {
