@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:san_travel/screens/login_screen.dart';
 import 'package:san_travel/services/auth_service.dart';
+import 'package:san_travel/services/user_preferences.dart';
 import 'package:san_travel/widgets/bottom_navigation_bar.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -254,7 +255,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     children: [
                       const Text(
-                        'Or continue with',
+                        'Or continue',
                         style: TextStyle(
                           color: Color.fromARGB(255, 139, 139, 139),
                         ),
@@ -264,9 +265,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.black,
                           ),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            try {
+                              final user = await _auth.signInWithGoogle();
+                              if (user != null && mounted) {
+                                final userId = user.uid;
+                                // Kullanıcı bilgilerini SharedPreferences'e kaydet
+                                await UserPreferences.saveUserData(
+                                    userId, user.displayName ?? 'User');
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BottomNavBar(userId: userId),
+                                  ),
+                                );
+                              } else {
+                                if (mounted) {
+                                  _showErrorDialog(
+                                      'Google ile giriş başarısız oldu. Lütfen tekrar deneyin.');
+                                }
+                              }
+                            } catch (e) {
+                              if (mounted) {
+                                _showErrorDialog(
+                                    'Giriş hatası: ${e.toString()}');
+                              }
+                            } finally {
+                              if (mounted) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
+                            }
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
@@ -278,7 +315,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   height: 24,
                                 ),
                                 const SizedBox(width: 10),
-                                const Text('Login with Google')
+                                const Text(
+                                  'Login with Google',
+                                  style: TextStyle(color: Colors.white),
+                                )
                               ],
                             ),
                           ),

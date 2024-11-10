@@ -202,7 +202,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         //   );
                         // },
                         child: const Text(
-                          'Or continue with',
+                          'Or continue',
                           style: TextStyle(
                             color: Color.fromARGB(255, 139, 139, 139),
                           ),
@@ -213,7 +213,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.black,
                           ),
                           onPressed: () async {
                             setState(() {
@@ -263,7 +263,10 @@ class _LogInScreenState extends State<LogInScreen> {
                                   height: 24,
                                 ),
                                 const SizedBox(width: 10),
-                                const Text('Login with Google')
+                                const Text(
+                                  'Login with Google',
+                                  style: TextStyle(color: Colors.white),
+                                )
                               ],
                             ),
                           ),
