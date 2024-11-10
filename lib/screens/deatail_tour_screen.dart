@@ -379,62 +379,55 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade300),
               ),
-              child: Card(
-                elevation: BorderSide.strokeAlignCenter,
-                child: SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 20, top: 20, left: 26, right: 26),
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          child: Row(
-                            children: [
-                              Text(
-                                "\$600",
-                                style: TextStyle(
-                                    color: Color(0XFFF0A7BAB),
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "/ 1-3 pax",
-                                style: TextStyle(color: Color(0XFFF0A7BAB)),
-                              ),
-                            ],
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    bottom: 10, top: 10, left: 16, right: 16),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Row(
+                        children: [
+                          Text(
+                            "\$600",
+                            style: TextStyle(
+                                color: Color(0XFFF0A7BAB),
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const DetailBookingScreen(),
-                              ),
-                            ),
-                            child: const Card(
-                              color: Color(0XFFF0FA3E2),
-                              child: SizedBox(
-                                height: 60,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Book Now",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          Text(
+                            "/ 1-3 pax",
+                            style: TextStyle(color: Color(0XFFF0A7BAB)),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailBookingScreen(),
+                          ),
+                        ),
+                        child: const Card(
+                          color: Color(0XFFF0FA3E2),
+                          child: SizedBox(
+                            height: 50,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Book Now",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

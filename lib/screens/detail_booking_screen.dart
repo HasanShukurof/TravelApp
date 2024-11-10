@@ -351,104 +351,98 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
             ),
           ),
           Container(
-            child: SizedBox(
-              height: 100,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 20, top: 20, left: 26, right: 26),
-                  child: Row(
-                    children: [
-                      const Expanded(
-                        child: Row(
-                          children: [
-                            Text(
-                              "\$600",
-                              style: TextStyle(
-                                  color: Color(0XFFF0A7BAB),
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "/Person",
-                              style: TextStyle(color: Color(0XFFF0A7BAB)),
-                            ),
-                          ],
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 10, top: 10, left: 16, right: 16),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          "\$600",
+                          style: TextStyle(
+                              color: Color(0XFFF0A7BAB),
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_guestNameController.text.isNotEmpty &&
-                                _guestCountController.text.isNotEmpty &&
-                                dropDownValue != null &&
-                                _completeNumber != null &&
-                                startDate != null &&
-                                endDate != null) {
-                              // Tüm gerekli alanlar doldurulmuş, diğer sayfaya geçiş yap
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PaymentMethodScreen(
-                                    guestName: _guestNameController.text,
-                                    guestCount: _guestCountController.text,
-                                    carType: dropDownValue!,
-                                    phoneNumber: _completeNumber!,
-                                    isCheckedAirportPickUp:
-                                        isCheckedAirportPickUp,
-                                    startDate: startDate,
-                                    endDate: endDate,
+                        Text(
+                          "/Person",
+                          style: TextStyle(color: Color(0XFFF0A7BAB)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_guestNameController.text.isNotEmpty &&
+                            _guestCountController.text.isNotEmpty &&
+                            dropDownValue != null &&
+                            _completeNumber != null &&
+                            startDate != null &&
+                            endDate != null) {
+                          // Tüm gerekli alanlar doldurulmuş, diğer sayfaya geçiş yap
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PaymentMethodScreen(
+                                guestName: _guestNameController.text,
+                                guestCount: _guestCountController.text,
+                                carType: dropDownValue!,
+                                phoneNumber: _completeNumber!,
+                                isCheckedAirportPickUp: isCheckedAirportPickUp,
+                                startDate: startDate,
+                                endDate: endDate,
+                              ),
+                            ),
+                          );
+                        } else {
+                          // Eksik bilgi var, AlertDialog göster
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Warning'),
+                                content: const Text(
+                                    'Please fill in all empty fields.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
                                   ),
-                                ),
+                                ],
                               );
-                            } else {
-                              // Eksik bilgi var, AlertDialog göster
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Warning'),
-                                    content: const Text(
-                                        'Please fill in all empty fields.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('OK'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          },
-                          child: const Card(
-                            elevation: 2.2,
-                            color: Color(0XFFF0FA3E2),
-                            child: SizedBox(
-                              height: 60,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Next",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
+                            },
+                          );
+                        }
+                      },
+                      child: const Card(
+                        elevation: 2.2,
+                        color: Color(0XFFF0FA3E2),
+                        child: SizedBox(
+                          height: 50,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Next",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
                               ),
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
