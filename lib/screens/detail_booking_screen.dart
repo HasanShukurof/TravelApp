@@ -114,28 +114,70 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   Future<void> _startDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: startDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
+      initialDate: startDate ?? (endDate ?? DateTime.now()),
+      firstDate: endDate ?? DateTime(2000),
       lastDate: DateTime(2101),
     );
     if (picked != null) {
-      setState(() {
-        startDate = picked;
-      });
+      // "Start Date"nin "End Date"ten sonra olmadığından emin olun
+      if (endDate != null && picked.isAfter(endDate!)) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Warning'),
+              content: const Text('Start Date cannot be after End Date.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        setState(() {
+          startDate = picked; // Hata burada düzeltiliyor
+        });
+      }
     }
   }
 
   Future<void> _endDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: endDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
+      initialDate: endDate ?? (startDate ?? DateTime.now()),
+      firstDate: startDate ?? DateTime(2000),
       lastDate: DateTime(2101),
     );
     if (picked != null) {
-      setState(() {
-        endDate = picked;
-      });
+      // "End Date"nin "Start Date"ten önce olmadığından emin olun
+      if (startDate != null && picked.isBefore(startDate!)) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Warning'),
+              content: const Text('End Date cannot be before Start Date.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        setState(() {
+          endDate = picked;
+        });
+      }
     }
   }
 
@@ -645,7 +687,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                       children: [
                         Text(
                           isCheckedAirportPickUp
-                              ? '${resultAmount + 30}'
+                              ? '${resultAmount + 33}'
                               : '$resultAmount',
                           style: const TextStyle(
                               color: Color(0XFFF0A7BAB),
