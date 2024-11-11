@@ -42,6 +42,42 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   DateTime? pickUpDate;
   DateTime? startDate;
   DateTime? endDate;
+  int? dayDifference;
+  int resultAmount = 0;
+
+  void calculate() {
+    if (startDate != null && endDate != null) {
+      setState(() {
+        // Tarihler arasındaki farkı hesapla
+        dayDifference = endDate!.difference(startDate!).inDays;
+
+        // Eğer fark 0 ise, en az 1 gün olarak hesapla (isteğe bağlı)
+        if (dayDifference == 0) {
+          dayDifference = 1;
+        }
+      });
+    }
+
+    int autoTypeValue = 0;
+    if (dropDownValue == 'Sedan') {
+      autoTypeValue =
+          int.tryParse(widget.sedanPrice.toString()) ?? 0; // Dönüşüm eklendi
+    } else if (dropDownValue == 'Minivan') {
+      autoTypeValue =
+          int.tryParse(widget.minivanPrice.toString()) ?? 0; // Dönüşüm eklendi
+    } else {
+      autoTypeValue = 0;
+    }
+
+    // Gün farkı `null` ise hesaplama yapma
+    if (dayDifference != null && dayDifference! > 0) {
+      resultAmount = autoTypeValue + (dayDifference! * 100);
+    } else {
+      resultAmount = 0; // Hata durumunda varsayılan bir değer
+    }
+
+    setState(() {});
+  }
 
   Future<void> _pickUpTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -188,6 +224,47 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+                          Text('Auto type'),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(17))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: DropdownButton<String>(
+                                underline: const SizedBox(),
+                                isExpanded: true,
+                                hint: const Text("Choose"),
+                                value: dropDownValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value != null) {
+                                      dropDownValue = value;
+                                      // Guest count değerini seçime göre güncelle
+                                      if (value == 'Sedan') {
+                                        _guestCountController.text = '1-3 pax';
+                                      } else if (value == 'Minivan') {
+                                        _guestCountController.text = '1-7 pax';
+                                      }
+                                    }
+                                  });
+                                },
+                                items: listAutoType.map((valueItem) {
+                                  return DropdownMenuItem<String>(
+                                    value: valueItem,
+                                    child: Text(
+                                      valueItem,
+                                      style: const TextStyle(),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           const Text(
                             "Guest count",
                             style: TextStyle(fontSize: 13),
@@ -207,51 +284,14 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                 bottom: 8,
                               ),
                               child: TextField(
-                                focusNode: _guestCountFocusNode,
-                                keyboardType: TextInputType.number,
+                                readOnly:
+                                    true, // TextField düzenlenemez hale getirildi
                                 controller: _guestCountController,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText:
-                                      _guestCountFocusNode.hasFocus ? '' : "3",
+                                  hintText: "0 pax",
                                 ),
                                 style: const TextStyle(fontSize: 15),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade300),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(17))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: DropdownButton<String>(
-                                underline: const SizedBox(),
-                                isExpanded: true,
-                                hint: const Text("Choose auto type"),
-                                value: dropDownValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    if (value != null) {
-                                      dropDownValue = value;
-                                    }
-                                  });
-                                },
-                                items: listAutoType.map(
-                                  (valueItem) {
-                                    return DropdownMenuItem<String>(
-                                      value: valueItem,
-                                      child: Text(
-                                        valueItem,
-                                        style: const TextStyle(),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
                               ),
                             ),
                           ),
@@ -348,8 +388,8 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                                   padding: const EdgeInsets.all(
                                                       18.0),
                                                   child: Text(
-                                                    startDate != null
-                                                        ? startDate!
+                                                    pickUpDate != null
+                                                        ? pickUpDate!
                                                             .toLocal()
                                                             .toString()
                                                             .split(' ')[0]
@@ -359,7 +399,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                                             .split(' ')[0],
                                                     style: TextStyle(
                                                       fontSize: 15,
-                                                      color: startDate == null
+                                                      color: pickUpDate == null
                                                           ? Colors.grey
                                                           : Colors.black,
                                                     ),
@@ -505,19 +545,22 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                           const SizedBox(
                             height: 30,
                           ),
-                          const Card(
-                            elevation: 2.2,
-                            color: Color(0XFFF0FA3E2),
-                            child: SizedBox(
-                              height: 60,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Calculate",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 15,
+                          GestureDetector(
+                            onTap: () => calculate(),
+                            child: const Card(
+                              elevation: 2.2,
+                              color: Color(0XFFF0FA3E2),
+                              child: SizedBox(
+                                height: 60,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Calculate",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -543,18 +586,18 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                   bottom: 10, top: 10, left: 16, right: 16),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Row(
                       children: [
                         Text(
-                          "\$600",
-                          style: TextStyle(
+                          resultAmount != null ? '$resultAmount' : 'N/A',
+                          style: const TextStyle(
                               color: Color(0XFFF0A7BAB),
                               fontSize: 21,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          "/Person",
+                        const Text(
+                          "  AZN",
                           style: TextStyle(color: Color(0XFFF0A7BAB)),
                         ),
                       ],
