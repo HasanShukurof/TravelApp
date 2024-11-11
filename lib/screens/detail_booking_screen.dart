@@ -72,21 +72,12 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
       autoTypeValue = 0;
     }
 
-    if (!isCheckedAirportPickUp) {
-      picUpAmount = 0;
-    } else {
-      picUpAmount = 30;
-    }
-
     if (dayDifference != null && dayDifference! == 0) {
-      resultAmount = autoTypeValue +
-          picUpAmount +
-          (autoTypeValue + picUpAmount) * 10 / 100;
+      resultAmount = autoTypeValue + (autoTypeValue) * 10 / 100;
     } else if (dayDifference != null && dayDifference! > 0) {
       resultAmount = autoTypeValue +
-          picUpAmount +
           (dayDifference! * 100) +
-          (autoTypeValue + picUpAmount + (dayDifference! * 100)) * 10 / 100;
+          (autoTypeValue + (dayDifference! * 100)) * 10 / 100;
     } else {
       resultAmount = 0; // Hata durumunda varsayılan bir değer
     }
@@ -653,7 +644,9 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                     child: Row(
                       children: [
                         Text(
-                          '$resultAmount',
+                          isCheckedAirportPickUp
+                              ? '${resultAmount + 30}'
+                              : '$resultAmount',
                           style: const TextStyle(
                               color: Color(0XFFF0A7BAB),
                               fontSize: 21,
