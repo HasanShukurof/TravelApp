@@ -7,6 +7,7 @@ import 'package:san_travel/screens/payment_screen.dart';
 class PaymentMethodScreen extends StatefulWidget {
   final String guestName;
   final String guestCount;
+  final String comment;
   final String carType;
   final String phoneNumber;
   final bool isCheckedAirportPickUp;
@@ -20,6 +21,7 @@ class PaymentMethodScreen extends StatefulWidget {
     super.key,
     required this.guestName,
     required this.guestCount,
+    required this.comment,
     required this.carType,
     required this.phoneNumber,
     required this.isCheckedAirportPickUp,
@@ -42,6 +44,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     final Map<String, dynamic> data = {
       'guestName': widget.guestName,
       'guestCount': widget.guestCount,
+      'comment': widget.comment,
       'carType': widget.carType,
       'phoneNumber': widget.phoneNumber,
       'isCheckedAirportPickUp': widget.isCheckedAirportPickUp,

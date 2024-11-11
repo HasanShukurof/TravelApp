@@ -511,7 +511,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                   )
                                 : const SizedBox.shrink(), // Boş görünüm
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           const Row(
@@ -653,7 +653,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                     child: Row(
                       children: [
                         Text(
-                          resultAmount != null ? '$resultAmount' : 'N/A',
+                          '$resultAmount',
                           style: const TextStyle(
                               color: Color(0XFFF0A7BAB),
                               fontSize: 21,
@@ -684,6 +684,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                               builder: (context) => PaymentMethodScreen(
                                   guestName: _guestNameController.text,
                                   guestCount: _guestCountController.text,
+                                  comment: _commentController.text,
                                   carType: dropDownValue!,
                                   phoneNumber: _completeNumber!,
                                   isCheckedAirportPickUp:
