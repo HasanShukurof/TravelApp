@@ -35,6 +35,8 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   final TextEditingController _toDateController = TextEditingController();
   List<String> listAutoType = ["Sedan", "Minivan"];
   bool isCheckedAirportPickUp = false;
+  final FocusNode _focusNode = FocusNode();
+  final FocusNode _guestCountFocusNode = FocusNode();
   String? _completeNumber;
   TimeOfDay? pickUpTime;
   DateTime? pickUpDate;
@@ -96,6 +98,27 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // FocusNode'un odak değişikliklerini dinleyin
+    _focusNode.addListener(() {
+      setState(
+          () {}); // Odak değiştiğinde yeniden oluşturma için setState kullanın
+    });
+    _guestCountFocusNode.addListener(() {
+      setState(
+          () {}); // Odak değiştiğinde yeniden oluşturma için setState kullanın
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose(); // Bellek sızıntılarını önlemek için dispose
+    _guestCountFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -150,9 +173,14 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                 bottom: 8,
                               ),
                               child: TextField(
+                                focusNode:
+                                    _focusNode, // FocusNode'u TextField'a bağlayın
+                                keyboardType: TextInputType.name,
                                 controller: _guestNameController,
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none, hintText: "John"),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: _focusNode.hasFocus ? '' : "Jone",
+                                ),
                                 style: const TextStyle(fontSize: 15),
                               ),
                             ),
@@ -161,7 +189,7 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                             height: 20,
                           ),
                           const Text(
-                            "Guest number",
+                            "Guest count",
                             style: TextStyle(fontSize: 13),
                           ),
                           Container(
@@ -179,9 +207,14 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                 bottom: 8,
                               ),
                               child: TextField(
+                                focusNode: _guestCountFocusNode,
+                                keyboardType: TextInputType.number,
                                 controller: _guestCountController,
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none, hintText: "3"),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                      _guestCountFocusNode.hasFocus ? '' : "3",
+                                ),
                                 style: const TextStyle(fontSize: 15),
                               ),
                             ),
