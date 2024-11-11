@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -29,6 +32,7 @@ class DetailBookingScreen extends StatefulWidget {
 class _DetailBookingScreenState extends State<DetailBookingScreen> {
   final TextEditingController _guestNameController = TextEditingController();
   final TextEditingController _guestCountController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   String? dropDownValue;
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _fromDateController = TextEditingController();
@@ -37,13 +41,15 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   bool isCheckedAirportPickUp = false;
   final FocusNode _focusNode = FocusNode();
   final FocusNode _guestCountFocusNode = FocusNode();
+  final FocusNode _commentFocusNode = FocusNode();
   String? _completeNumber;
   TimeOfDay? pickUpTime;
   DateTime? pickUpDate;
   DateTime? startDate;
   DateTime? endDate;
   int? dayDifference;
-  int resultAmount = 0;
+  double resultAmount = 0;
+  int picUpAmount = 0;
 
   void calculate() {
     if (startDate != null && endDate != null) {
@@ -52,9 +58,6 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
         dayDifference = endDate!.difference(startDate!).inDays;
 
         // Eğer fark 0 ise, en az 1 gün olarak hesapla (isteğe bağlı)
-        if (dayDifference == 0) {
-          dayDifference = 1;
-        }
       });
     }
 
@@ -69,13 +72,25 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
       autoTypeValue = 0;
     }
 
-    // Gün farkı `null` ise hesaplama yapma
-    if (dayDifference != null && dayDifference! > 0) {
-      resultAmount = autoTypeValue + (dayDifference! * 100);
+    if (!isCheckedAirportPickUp) {
+      picUpAmount = 0;
+    } else {
+      picUpAmount = 30;
+    }
+
+    if (dayDifference != null && dayDifference! == 0) {
+      resultAmount = autoTypeValue +
+          picUpAmount +
+          (autoTypeValue + picUpAmount) * 10 / 100;
+    } else if (dayDifference != null && dayDifference! > 0) {
+      resultAmount = autoTypeValue +
+          picUpAmount +
+          (dayDifference! * 100) +
+          (autoTypeValue + picUpAmount + (dayDifference! * 100)) * 10 / 100;
     } else {
       resultAmount = 0; // Hata durumunda varsayılan bir değer
     }
-
+    print(dayDifference);
     setState(() {});
   }
 
@@ -145,12 +160,16 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
       setState(
           () {}); // Odak değiştiğinde yeniden oluşturma için setState kullanın
     });
+    _commentFocusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
     _focusNode.dispose(); // Bellek sızıntılarını önlemek için dispose
     _guestCountFocusNode.dispose();
+    _commentFocusNode.dispose();
     super.dispose();
   }
 
@@ -443,6 +462,50 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                                             ),
                                           ),
                                         ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Write Comment',
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 100,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade300),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(17),
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 18,
+                                            top: 8,
+                                            right: 8,
+                                            bottom: 8,
+                                          ),
+                                          child: TextField(
+                                            maxLines: null,
+                                            focusNode:
+                                                _commentFocusNode, // FocusNode'u TextField'a bağlayın
+                                            keyboardType: TextInputType.name,
+                                            controller: _commentController,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: _commentFocusNode
+                                                      .hasFocus
+                                                  ? ''
+                                                  : "For example: Terminal A",
+                                            ),
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   )
