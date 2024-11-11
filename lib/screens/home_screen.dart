@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             currentUsername = snapshot.data;
                             return Text('Welcome, ${snapshot.data}');
                           } else {
-                            return const Text('User');
+                            return const Text('Welcome');
                           }
                         },
                       ),

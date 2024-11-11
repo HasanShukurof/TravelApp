@@ -36,9 +36,36 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
   List<String> listAutoType = ["Sedan", "Minivan"];
   bool isCheckedAirportPickUp = false;
   String? _completeNumber;
-
+  TimeOfDay? pickUpTime;
+  DateTime? pickUpDate;
   DateTime? startDate;
   DateTime? endDate;
+
+  Future<void> _pickUpTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null && picked != pickUpTime) {
+      setState(() {
+        pickUpTime = picked;
+      });
+    }
+  }
+
+  Future<void> _pickUpDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: pickUpDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        pickUpDate = picked;
+      });
+    }
+  }
 
   Future<void> _startDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -230,29 +257,138 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                           Row(
                             children: [
                               Checkbox(
-                                  value: isCheckedAirportPickUp,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      isCheckedAirportPickUp = value!;
-                                    });
-                                  }),
+                                checkColor: Colors.white,
+                                activeColor: Color(0XFFF0FA3E2),
+                                value: isCheckedAirportPickUp,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isCheckedAirportPickUp = value!;
+                                  });
+                                },
+                              ),
                               const Text("Airport pick-up"),
                             ],
                           ),
                           const SizedBox(
                             height: 20,
                           ),
+                          AnimatedSwitcher(
+                            duration: const Duration(
+                                milliseconds: 300), // Animasyonun süresi
+                            child: isCheckedAirportPickUp
+                                ? Column(
+                                    key: const ValueKey(
+                                        1), // Unique key, animasyon için gerekli
+                                    children: [
+                                      const Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Date (pick up)",
+                                              style: TextStyle(fontSize: 13),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "Time (pick up)",
+                                              style: TextStyle(fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () => _pickUpDate(context),
+                                              child: Container(
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(17)),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      18.0),
+                                                  child: Text(
+                                                    startDate != null
+                                                        ? startDate!
+                                                            .toLocal()
+                                                            .toString()
+                                                            .split(' ')[0]
+                                                        : DateTime.now()
+                                                            .toLocal()
+                                                            .toString()
+                                                            .split(' ')[0],
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: startDate == null
+                                                          ? Colors.grey
+                                                          : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () => _pickUpTime(context),
+                                              child: Container(
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(17)),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      18.0),
+                                                  child: Text(
+                                                    pickUpTime != null
+                                                        ? pickUpTime!
+                                                            .format(context)
+                                                        : TimeOfDay.now()
+                                                            .format(context),
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: pickUpTime == null
+                                                          ? Colors.grey
+                                                          : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink(), // Boş görünüm
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           const Row(
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Date (start)",
+                                  "Start Date (tour)",
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  "Date (end)",
+                                  "End Date (tour)",
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -399,7 +535,9 @@ class _DetailBookingScreenState extends State<DetailBookingScreen> {
                             dropDownValue != null &&
                             _completeNumber != null &&
                             startDate != null &&
-                            endDate != null) {
+                            endDate != null &&
+                            (!isCheckedAirportPickUp ||
+                                (pickUpDate != null && pickUpTime != null))) {
                           // Tüm gerekli alanlar doldurulmuş, diğer sayfaya geçiş yap
                           Navigator.push(
                             context,
