@@ -1,6 +1,6 @@
 {
-    "name": "san_travel",
-    "short_name": "san_travel",
+    "name": "tripaz",
+    "short_name": "tripaz",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

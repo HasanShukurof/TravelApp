@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:san_travel/screens/detail_booking_screen.dart';
-import 'package:san_travel/screens/full_screen_image.dart';
-import 'package:san_travel/widgets/bottom_navigation_bar.dart';
+import 'package:tripaz/screens/detail_booking_screen.dart';
+import 'package:tripaz/screens/full_screen_image.dart';
+import 'package:tripaz/widgets/bottom_navigation_bar.dart';
 
 class DetailTourScreen extends StatefulWidget {
   final String userName;

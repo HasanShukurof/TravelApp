@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:san_travel/screens/home_screen.dart';
-import 'package:san_travel/screens/notification_screen.dart';
-import 'package:san_travel/screens/profile_screen.dart';
-import 'package:san_travel/screens/wish_list_screen.dart';
+import 'package:tripaz/screens/home_screen.dart';
+import 'package:tripaz/screens/notification_screen.dart';
+import 'package:tripaz/screens/profile_screen.dart';
+import 'package:tripaz/screens/wish_list_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key, this.userId});

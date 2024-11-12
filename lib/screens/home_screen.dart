@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:san_travel/screens/deatail_tour_screen.dart';
-import 'package:san_travel/screens/login_screen.dart';
-import 'package:san_travel/screens/widgets/heart_icon_widget.dart';
-import 'package:san_travel/services/auth_service.dart';
-import 'package:san_travel/services/user_preferences.dart';
-import 'package:san_travel/widgets/search_text_widget.dart';
+import 'package:tripaz/screens/deatail_tour_screen.dart';
+import 'package:tripaz/screens/login_screen.dart';
+import 'package:tripaz/screens/widgets/heart_icon_widget.dart';
+import 'package:tripaz/services/auth_service.dart';
+import 'package:tripaz/services/user_preferences.dart';
+import 'package:tripaz/widgets/search_text_widget.dart';
 
 import '../model/tour_model.dart';
 

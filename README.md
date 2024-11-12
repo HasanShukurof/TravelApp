@@ -1,4 +1,4 @@
-# san_travel
+# tripaz
 
 A new Flutter project.
 

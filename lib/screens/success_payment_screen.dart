@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:san_travel/widgets/bottom_navigation_bar.dart';
+import 'package:tripaz/widgets/bottom_navigation_bar.dart';
 
 class SuccesPaymentScreen extends StatefulWidget {
   const SuccesPaymentScreen({super.key});

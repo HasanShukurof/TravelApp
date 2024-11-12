@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:san_travel/screens/register_screen.dart';
-import 'package:san_travel/services/auth_service.dart';
-import 'package:san_travel/services/user_preferences.dart';
-import 'package:san_travel/widgets/bottom_navigation_bar.dart';
+import 'package:tripaz/screens/register_screen.dart';
+import 'package:tripaz/services/auth_service.dart';
+import 'package:tripaz/services/user_preferences.dart';
+import 'package:tripaz/widgets/bottom_navigation_bar.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});

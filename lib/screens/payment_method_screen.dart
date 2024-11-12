@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:san_travel/screens/payment_screen.dart';
+import 'package:tripaz/screens/payment_screen.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final String guestName;

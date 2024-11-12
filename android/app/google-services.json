@@ -1,48 +1,48 @@
 {
   "project_info": {
-    "project_number": "6196449018",
-    "project_id": "tripaz-travel-app",
-    "storage_bucket": "tripaz-travel-app.appspot.com"
+    "project_number": "439722351876",
+    "project_id": "tripaz",
+    "storage_bucket": "tripaz.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:6196449018:android:ad7b3b8e5be7ed431ac343",
+        "mobilesdk_app_id": "1:439722351876:android:3f21332a0c5ec9e9db8451",
         "android_client_info": {
-          "package_name": "com.hasanshukurov.san_travel"
+          "package_name": "com.hasanshukurov.tripaz"
         }
       },
       "oauth_client": [
         {
-          "client_id": "6196449018-fe6neqjm403v66ivnv2ojj91vbigu2q8.apps.googleusercontent.com",
+          "client_id": "439722351876-6ht4v08cat6m5loao3lrfi5tumd8ohaa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hasanshukurov.san_travel",
+            "package_name": "com.hasanshukurov.tripaz",
             "certificate_hash": "c22abde24c3273c57f27e52ffbe50d0b8f5b1338"
           }
         },
         {
-          "client_id": "6196449018-7q5abv0j8736rdhfnsh32u0g410ion6d.apps.googleusercontent.com",
+          "client_id": "439722351876-gie6bp79su0venrvgvmft1vut8hhtna2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB9K9V7xLV8Dfwnd6xmydL_fw7uQzMpJWo"
+          "current_key": "AIzaSyBZ4jfJg4EbygtkUbzaDnyBTOJzQYgR0e8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "6196449018-7q5abv0j8736rdhfnsh32u0g410ion6d.apps.googleusercontent.com",
+              "client_id": "439722351876-gie6bp79su0venrvgvmft1vut8hhtna2.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "6196449018-4243rmadmosfd609q0m3ckpmjavps4dt.apps.googleusercontent.com",
+              "client_id": "439722351876-3ln4vb98teg37sqf7208ab0guao0jufb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.hasanshukurov.tripaz"
+                "bundle_id": "com.hasanshukurov.sanTravel"
               }
             }
           ]

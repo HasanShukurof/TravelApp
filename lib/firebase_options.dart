@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCx5ujSVWqTqNGQYxnIBKA5wsX-MQa9DXs',
-    appId: '1:6196449018:web:67ab6c51ccc7161a1ac343',
-    messagingSenderId: '6196449018',
-    projectId: 'tripaz-travel-app',
-    authDomain: 'tripaz-travel-app.firebaseapp.com',
-    storageBucket: 'tripaz-travel-app.appspot.com',
-    measurementId: 'G-MLTQNG132R',
+    apiKey: 'AIzaSyBHywndvKh5pUsUVkQVSsc8-p3VsDW6fIs',
+    appId: '1:439722351876:web:1dc5937b085fce77db8451',
+    messagingSenderId: '439722351876',
+    projectId: 'tripaz',
+    authDomain: 'tripaz.firebaseapp.com',
+    storageBucket: 'tripaz.firebasestorage.app',
+    measurementId: 'G-V0HRPPNZS2',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB9K9V7xLV8Dfwnd6xmydL_fw7uQzMpJWo',
-    appId: '1:6196449018:android:ad7b3b8e5be7ed431ac343',
-    messagingSenderId: '6196449018',
-    projectId: 'tripaz-travel-app',
-    storageBucket: 'tripaz-travel-app.appspot.com',
+    apiKey: 'AIzaSyBZ4jfJg4EbygtkUbzaDnyBTOJzQYgR0e8',
+    appId: '1:439722351876:android:3f21332a0c5ec9e9db8451',
+    messagingSenderId: '439722351876',
+    projectId: 'tripaz',
+    storageBucket: 'tripaz.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBA66TPz6UMHrVqiAHFAxrcORLKBGBDiNI',
-    appId: '1:6196449018:ios:5a321498c3cb31391ac343',
-    messagingSenderId: '6196449018',
-    projectId: 'tripaz-travel-app',
-    storageBucket: 'tripaz-travel-app.appspot.com',
-    iosBundleId: 'com.hasanshukurov.sanTravel',
+    apiKey: 'AIzaSyBGe6eLfHkdtYl8sfik-16XsBq9u1C6PAs',
+    appId: '1:439722351876:ios:685cbe693c8a265bdb8451',
+    messagingSenderId: '439722351876',
+    projectId: 'tripaz',
+    storageBucket: 'tripaz.firebasestorage.app',
+    iosBundleId: 'com.hasanshukurov.tripaz',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBA66TPz6UMHrVqiAHFAxrcORLKBGBDiNI',
-    appId: '1:6196449018:ios:5a321498c3cb31391ac343',
-    messagingSenderId: '6196449018',
-    projectId: 'tripaz-travel-app',
-    storageBucket: 'tripaz-travel-app.appspot.com',
-    iosBundleId: 'com.hasanshukurov.sanTravel',
+    apiKey: 'AIzaSyBGe6eLfHkdtYl8sfik-16XsBq9u1C6PAs',
+    appId: '1:439722351876:ios:53113aca0c85e7fedb8451',
+    messagingSenderId: '439722351876',
+    projectId: 'tripaz',
+    storageBucket: 'tripaz.firebasestorage.app',
+    iosBundleId: 'com.hasanshukurov.tripaz',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCx5ujSVWqTqNGQYxnIBKA5wsX-MQa9DXs',
-    appId: '1:6196449018:web:e0d0d9a667671e031ac343',
-    messagingSenderId: '6196449018',
-    projectId: 'tripaz-travel-app',
-    authDomain: 'tripaz-travel-app.firebaseapp.com',
-    storageBucket: 'tripaz-travel-app.appspot.com',
-    measurementId: 'G-6LREND5L58',
+    apiKey: 'AIzaSyBHywndvKh5pUsUVkQVSsc8-p3VsDW6fIs',
+    appId: '1:439722351876:web:69566b5fe66f4794db8451',
+    messagingSenderId: '439722351876',
+    projectId: 'tripaz',
+    authDomain: 'tripaz.firebaseapp.com',
+    storageBucket: 'tripaz.firebasestorage.app',
+    measurementId: 'G-12DWJ690HZ',
   );
 }

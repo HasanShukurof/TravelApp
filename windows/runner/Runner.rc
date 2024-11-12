@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.hasanshukurov" "\0"
-            VALUE "FileDescription", "san_travel" "\0"
+            VALUE "FileDescription", "tripaz" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "san_travel" "\0"
+            VALUE "InternalName", "tripaz" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.hasanshukurov. All rights reserved." "\0"
-            VALUE "OriginalFilename", "san_travel.exe" "\0"
-            VALUE "ProductName", "san_travel" "\0"
+            VALUE "OriginalFilename", "tripaz.exe" "\0"
+            VALUE "ProductName", "tripaz" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

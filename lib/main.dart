@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:san_travel/firebase_options.dart';
-import 'package:san_travel/screens/login_screen.dart';
-import 'package:san_travel/widgets/bottom_navigation_bar.dart';
-import 'package:san_travel/services/user_preferences.dart';
+import 'package:tripaz/firebase_options.dart';
+import 'package:tripaz/screens/login_screen.dart';
+import 'package:tripaz/widgets/bottom_navigation_bar.dart';
+import 'package:tripaz/services/user_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:san_travel/screens/login_screen.dart';
-import 'package:san_travel/services/auth_service.dart';
-import 'package:san_travel/services/user_preferences.dart';
-import 'package:san_travel/widgets/bottom_navigation_bar.dart';
+import 'package:tripaz/screens/login_screen.dart';
+import 'package:tripaz/services/auth_service.dart';
+import 'package:tripaz/services/user_preferences.dart';
+import 'package:tripaz/widgets/bottom_navigation_bar.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

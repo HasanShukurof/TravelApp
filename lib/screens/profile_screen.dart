@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:san_travel/screens/login_screen.dart';
-import 'package:san_travel/services/auth_service.dart';
+import 'package:tripaz/screens/login_screen.dart';
+import 'package:tripaz/services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, this.userId});
